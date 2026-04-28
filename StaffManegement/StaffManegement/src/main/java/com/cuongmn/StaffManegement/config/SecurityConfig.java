@@ -22,26 +22,14 @@ public class SecurityConfig {
     private final UserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
 
-//    @Bean
-//    public AuthenticationProvider authenticationProvider() {
-//        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-//
-//        // Spring Security dùng service này để load user từ DB
-//        provider.setUserDetailsService(userDetailsService);
-//
-//        // Dùng BCrypt để so password nhập vào với password hash trong DB
-//        provider.setPasswordEncoder(passwordEncoder);
-//
-//        return provider;
-//    }
-@Bean
-public AuthenticationProvider authenticationProvider() {
-    DaoAuthenticationProvider provider = new DaoAuthenticationProvider(userDetailsService);
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider(userDetailsService);
 
-    provider.setPasswordEncoder(passwordEncoder);
+        provider.setPasswordEncoder(passwordEncoder);
 
-    return provider;
-}
+        return provider;
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -57,8 +45,6 @@ public AuthenticationProvider authenticationProvider() {
                 // Quy định endpoint nào public, endpoint nào cần login
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/login").permitAll()
-                        .requestMatchers("/staff").permitAll() // Cho phép tạo staff đầu tiên để test
-                        .requestMatchers("/departments").permitAll() // Cho phép tạo staff đầu tiên để test
                         .anyRequest().authenticated()
                 )
 
